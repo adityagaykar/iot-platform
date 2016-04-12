@@ -1,5 +1,5 @@
-# iot-platform-event-server
-Event server for iot platform
+# iot-platform
+IoT platform main configuration server for application developers to on board their iot apps
 
 # Steps to setup : 
 
