@@ -11,6 +11,24 @@ block content
 					label(for="name") Name:
 					input.form-control(required="required",type="text", name="name")
 				div.form-group
+					label(for="name") Meta data 1:
+					input.form-control(required="required",placeholder="name",type="text", name="m1name")
+					input.form-control(required="required",placeholder="value",type="text", name="m1value")
+
+				div.form-group
+					label(for="name") Meta data 2:
+					input.form-control(required="required",placeholder="name",type="text", name="m2name")
+					input.form-control(required="required",placeholder="value",type="text", name="m2value")
+
+				div.form-group
+					label(for="name") Meta data 3:
+					input.form-control(required="required",placeholder="name",type="text", name="m3name")
+					input.form-control(required="required",placeholder="value",type="text", name="m3value")		
+				div.form-group
+					label(for="name") Meta data 4:
+					input.form-control(required="required",placeholder="name",type="text", name="m4name")
+					input.form-control(required="required",placeholder="value",type="text", name="m4value")
+				div.form-group
 					label(for="name") Type:
 					select.form-control(required="required", name="type")
 						- each variable,i in types

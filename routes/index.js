@@ -109,7 +109,7 @@ router.post('/login',function(req,res, next){
 		if (user){
 			req.session.user = user;
 			if(user.name == "admin")
-				res.redirect("/admin_home");
+				res.redirect("/adminhome");
 			else
 				res.redirect("/home");
 		} else {
