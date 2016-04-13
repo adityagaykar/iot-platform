@@ -29,7 +29,7 @@ var userModel = require('./models/users');
 var datasetModel = require('./models/dataset');
 // datasetModel.methods(['get','post','put','delete']);
 // datasetModel.register(app,'/datasets');
-var ruleModel = require('./models/rules')
+var ruleModel = require('./models/rules');
 var logicserverModel = require('./models/logicserver')
 var applicationModel = require('./models/applications');
 var applicationModel = require('./models/applications');

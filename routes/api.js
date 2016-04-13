@@ -14,18 +14,21 @@ var helper = require("../utils/helper");
 router.post("/v1.0/register",function(req,res,next){
 	var registration_key = req.body.registration_key;
 	var name = req.body.name;
+	//console.log("Name : "+name);
+	//console.log("registration_key : "+registration_key);
 	if(!name || !registration_key){
 		var error = { error : "Invalid request: missing name or registration_key"};
 		res.json(error);
-	}
+	}	
 	Application.findOne({registration_key: registration_key},function(err,data){
 		if(data){
+			//console.log("Data : "+data);
 			ApplicationUsers.create({
 				name: name,
 				app_id: data._id,
 				access_token: hat()				
 			},function(err,user){
-				//console.log(err+" "+user);
+				console.log(err+" "+user);
 				res.json(user);
 			});
 		} else {
