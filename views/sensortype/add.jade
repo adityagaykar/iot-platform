@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+	h3 Sensor Type
+	hr
+	div.col-md-12
+		h4 Add Sensor Type
+		div.col-md-6
+			form(method="POST", action="/sensortypes")
+				div.form-group
+					label(for="name") Name:
+					input.form-control(required="required",type="text", name="name")
+				div.form-group
+					label(for="name") Number of Output fields:
+					input.form-control(required="required",type="number", name="number_of_output_fields", id="number_of_output_fields")				
+				div.form-group
+					a.btn.btn-success(href="#", id="num_output_field_create") Create Output Fields
+				div#output_field_container.form-group						
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Submit")		
+block inPageScript
+	script.
+		$(document).ready(function(){
+			$("#num_output_field_create").click(function(){
+				var nums = $("#number_of_output_fields").val();
+				if(nums == ""){
+					alert("Enter number of output fields");
+					return false;
+				}
+
+				$("#output_field_container").html("");
+				
+				nums = parseInt(nums);
+				for(var i = 1; i <= nums; i++){
+					var tag = '<input type="text" placeholder="Output Field '+i+'" name="output_field'+i+'" class="form-control" required="required"/><br/>';
+					$("#output_field_container").append(tag);
+				}			
+			});
+		});
+		

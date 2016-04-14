@@ -6,6 +6,7 @@ var sha1 = require('sha1');
 var Application = mongoose.model("applications");
 var Gateway = mongoose.model("gateway");
 var GatewayType = mongoose.model("gatewayType");
+var SensorType = mongoose.model("sensorType");
 
 /* GET login page. */
 router.get('/', function(req, res, next) {
@@ -49,11 +50,21 @@ router.get('/adminhome',function(req,res,next){
 	var user = req.session.user;
 	if(user){
 		if(user.name == "admin"){
-			GatewayType.find({},function(err,types){
-				Gateway.find({},function(err, data){
-					res.render("adminhome",{user: user, gateways: data, types : types});	
-				});	
-			});						
+			var gateway_instances,sensor_types,gateway_types;
+				SensorType.find({},function(err,data){
+					sensor_types = data;	
+					GatewayType.find({},function(err,data){
+						gateway_types = data;
+						Gateway.find({},function(err, data){
+							gateway_instances = data;
+							res.render("adminhome",{user: user, gateway_instances: gateway_instances, sensor_types : sensor_types , gateway_types : gateway_types});						
+					});	
+				});			
+			});
+			
+			
+			
+			// res.render("adminhome",{user: user, gateway_instances: gateway_instances, sensor_types : sensor_types , gateway_types : gateway_types});						
 		} else {
 			res.redirect("/home");
 		}

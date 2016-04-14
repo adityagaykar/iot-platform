@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+	div.col-md-12
+		h4 Applications
+		hr
+		div.col-md-6
+			table.table
+				tr
+					th Name
+					th Owner Id
+					th  
+				- each variable,i in applications
+					tr
+						td #{variable.name}
+						td #{variable.owner}
+						td
+							a(href="/applications/delete/#{variable._id}") Delete						
+
+		
+block inPageScript
+	script.
+		
+		

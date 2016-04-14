@@ -35,6 +35,7 @@ var applicationModel = require('./models/applications');
 var applicationModel = require('./models/applications');
 var gatewayModel = require('./models/gateway');
 var gatewayTypeModel = require('./models/gateway_type');
+var sensorTypeModel = require('./models/sensor_type');
 var registerGatewayModel = require('./models/register_gateway');
 var appUserModel = require('./models/app_users');
 
@@ -82,6 +83,7 @@ var logicserver = require('./routes/logicserver');
 var applications = require('./routes/applications');
 var gateways = require('./routes/gateway');
 var gatewaytype = require('./routes/gateway_type');
+var sensortype = require('./routes/sensor_type');
 var registerGateway = require('./routes/register_gateway');
 var api = require('./routes/api');
 
@@ -96,6 +98,7 @@ app.use('/applications',applications);
 app.use('/signup',applications);
 app.use('/gateways',gateways);
 app.use('/gatewaytypes',gatewaytype);
+app.use('/sensortypes',sensortype);
 app.use('/registergateways',registerGateway);
 
 // catch 404 and forward to error handler

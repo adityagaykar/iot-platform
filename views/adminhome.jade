@@ -4,7 +4,23 @@ block content
 	if user
 		h3 Welcome, #{user.name}	
 	hr
-
+	div.row
+		div.col-md-4
+			h4 Sensor Types
+			div.col-md-6
+				table.table
+					tr
+						th Name
+						th Owner Id
+						th  
+					- each variable,i in sensor_types
+						tr
+							td #{variable.name}
+							td #{variable.owner}
+							td
+								a(href="/sensortypes/delete/#{variable._id}") Delete
+		div.col-md-2				
+			a.btn.btn-primary(href="/sensortypes/add") Add
 	div.row
 		div.col-md-4
 			h4 Gateway Types
@@ -14,7 +30,7 @@ block content
 						th Name
 						th Owner Id
 						th  
-					- each variable,i in types
+					- each variable,i in gateway_types
 						tr
 							td #{variable.name}
 							td #{variable.owner}
@@ -33,7 +49,7 @@ block content
 						th Type
 						th Dataset
 						th  
-					- each variable,i in gateways
+					- each variable,i in gateway_instances
 						tr
 							td #{variable.name}
 							td #{variable.owner}
