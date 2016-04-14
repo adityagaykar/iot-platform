@@ -13,14 +13,16 @@ router.get('/', function(req, res, next) {
 	if(user)
 		res.redirect("/home");
 	var errorMessage = req.session.error;
+	req.session.error = null;
 	res.render('login', { errorMessage : errorMessage});
 });
 
 /* Registration form */
 router.get('/signup', function(req, res, next) {
 	var user = req.session.user;
-	if(user)
+	if(user){
 		res.redirect("/home");
+	}
 	var errorMessage = req.session.error;
 	res.render('signup', { errorMessage : errorMessage});
 });
