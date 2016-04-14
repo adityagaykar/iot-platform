@@ -28,17 +28,33 @@ router.post("/", function(req, res, next){
 	var gateways = req.body.gateways;	
 	var owner = req.session.user._id;	
 	var app_id = req.body.app_id;
+	console.log(">"+app_id);
 	//res.send(JSON.stringify(gateways));
-	RegisterGateway.remove({app_id: app_id}, function(err,data){
-		RegisterGateway.create({
+	RegisterGateway.findOne({app_id: app_id},function(err,data){
+		if(data){
+			RegisterGateway.update({app_id: app_id},{
 				owner : owner,
 				gateways : gateways,
 				app_id : app_id,				
-		}, function(err, data){
-				if( err)
-					res.send(err);
-				res.redirect("/applications/home/"+data.app_id);			
-		});
+			}, function(err, data){
+					if(err)
+						res.send(err);
+					else
+						res.redirect("/applications/home/"+app_id);			
+			});
+		}else{
+			RegisterGateway.create({
+				owner : owner,
+				gateways : gateways,
+				app_id : app_id,				
+			}, function(err, data){
+					if(err)
+						res.send(err);
+					else
+						res.redirect("/applications/home/"+app_id);			
+			});	
+		}
+		
 	});	
 });
 	

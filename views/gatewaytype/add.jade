@@ -9,9 +9,72 @@ block content
 			form(method="POST", action="/gatewaytypes")
 				div.form-group
 					label(for="name") Name:
-					input.form-control(required="required",type="text", name="name")									
+					input.form-control(required="required",type="text", name="name")
+				div.form-group
+					label(for="name") Number of meta fields:
+					input.form-control(required="required",type="number", name="number_of_meta_fields", id="number_of_meta_fields")				
+				div.form-group
+					a.btn.btn-success(href="#", id="num_meta_create") Create Metas
+				div#meta_data_container.form-group
+				div.form-group
+					label(for="name") Number of static fields:
+					input.form-control(required="required",type="number", name="number_of_static_fields", id="number_of_static_fields")				
+				div.form-group
+					a.btn.btn-success(href="#", id="num_static_create") Create Statics
+				div#static_data_container.form-group
+				div.form-group
+					label(for="name") Number of sensors:
+					input.form-control(required="required",type="number", name="number_of_sensors", id="number_of_sensors")				
+				div.form-group
+					a.btn.btn-success(href="#", id="num_sensors_create") Create sensors
+				div#sensors_container.form-group
 				div.col-md-offset-5
 					input.btn.btn-success(required="required",type="submit", value="Submit")		
 block inPageScript
 	script.
+		$(document).ready(function(){
+			$("#num_meta_create").click(function(){
+				var nums = $("#number_of_meta_fields").val();
+				if(nums == ""){
+					alert("Enter number of meta fields");
+					return false;
+				}
+
+				$("#meta_data_container").html("");
+				
+				nums = parseInt(nums);
+				for(var i = 1; i <= nums; i++){
+					var tag = '<input type="text" placeholder="Meta data '+i+'" name="meta'+i+'" class="form-control" required="required"/>';
+					$("#meta_data_container").append(tag);
+				}			
+			});
+			$("#num_static_create").click(function(){
+				var nums = $("#number_of_static_fields").val();
+				if(nums == ""){
+					alert("Enter number of static fields");
+					return false;
+				}
+				$("#static_data_container").html("");
+				
+				nums = parseInt(nums);
+				for(var i = 1; i <= nums; i++){
+					var tag = '<input type="text" placeholder="Static data '+i+'" name="static'+i+'" class="form-control" required="required"/>';
+					$("#static_data_container").append(tag);
+				}
+			});
+			$("#num_sensors_create").click(function(){				
+				var nums = $("#number_of_sensors").val();
+				if(nums == ""){
+					alert("Enter number of sensors");
+					return false;
+				}
+				$("#sensors_container").html("");
+				
+				nums = parseInt(nums);
+				for(var i = 1; i <= nums; i++){
+					var tag = '<input type="text" placeholder="sensor data '+i+'" name="sensor'+i+'" class="form-control" required="required"/>';
+					$("#sensors_container").append(tag);
+				}
+			});
+		});
 		
