@@ -17,7 +17,7 @@ run the below command to install all the package dependencies mentioned in packa
 
 Mongodb
 
-## our database name : iotdb
+## our_database_name : iotdb
 
 Export directory
 
