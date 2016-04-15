@@ -9,21 +9,36 @@ block content
 			form(method="POST", action="/rules")
 				div.form-group
 					label(for="name") Name:
-					input.form-control(required="required",type="text", name="name")								
+					input.form-control(required="required",type="text", name="name")				
 				div.form-group
-					label(for="rule") Callback: 
-					input.form-control(type="text",name="callback", required="required")
-				div.form-group
-					label(for="rule") Uri: 
+					label(for="rule") Callback Uri: 
 					input.form-control(type="text",name="uri", required="required")
 				div.form-group
-					label(for="name") Sensor Type:
-					input.form-control(required="required",type="text", name="sensor_type")
+					label(for="name") Gateway Type:
+					select#gateway_type.form-control(required="required",name="gateway_type")
+						-each opt,i in gateway_types
+							option(value="#{opt._id}") #{opt.name}
+				div.form-group
+					label(for="sensor_type")
+					select#sensor_type.form-control(name="sensor_type")
 				div.col-md-offset-5
 					input.btn.btn-success(required="required",type="submit", value="Submit")
 					input(type="hidden",name="app_id",value="#{app_id}")
 
 		
+
 block inPageScript
 	script.
-		
+		$(document).ready(function(){
+			$("#gateway_type").change(function(){
+				var type = $("#gateway_type option:selected").val();
+				$.get("/rules/sensortypes/"+type, function(data){
+					var sensors = data;
+					var opts = [];
+					for(var sensor of sensors){
+						opts.push('<option value="'+sensor+'">'+sensor+'</option>');
+					}
+					$("#sensor_type").html(opts.join(""));
+				});
+			});
+		});

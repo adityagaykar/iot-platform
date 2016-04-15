@@ -4,6 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Dataset = mongoose.model("dataset");
 var Application = mongoose.model("applications");
+var ApplicationUsers = mongoose.model("ApplicationUsers");
 var hat = require('hat');
 //GET datasets
 router.get("/home/:id",function(req, res, next){
@@ -13,10 +14,15 @@ router.get("/home/:id",function(req, res, next){
 	});
 });
 
-//View Application user
+//View Application users
 
 router.get("/:id/users",function(req,res,next){
-
+	var app_id = req.params.id;
+	console.log(" App_id : "+ app_id);
+	ApplicationUsers.find({app_id : app_id}, function(err, apps){
+		console.log(JSON.stringify(apps));
+		res.render("application/view", {apps : apps})
+	});
 });
 
 //Add view
