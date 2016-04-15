@@ -21,6 +21,8 @@ block content
 				div.form-group
 					label(for="sensor_type")
 					select#sensor_type.form-control(name="sensor_type")
+						-each opt,i in sensor_types
+							option(value="#{opt}") #{opt}
 				div.col-md-offset-5
 					input.btn.btn-success(required="required",type="submit", value="Submit")
 					input(type="hidden",name="app_id",value="#{app_id}")
