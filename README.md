@@ -21,12 +21,12 @@ Mongodb
 
 Export directory
 
-## <directory_path> : <repo-path>/data
+## directory_path : repo-path/data
 
 Exporting mongodb
 
-## mongodump -d <our_database_name> -o <directory_path>
+## mongodump -d our_database_name -o directory_path
 
 Importing mongodb
 
-## mongorestore -d <our_database_name> <directory_path>
+## mongorestore -d our_database_name directory_path
