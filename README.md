@@ -14,3 +14,19 @@ install nodemon to start nodejs server, (-g parameter to make it global, so you 
 run the below command to install all the package dependencies mentioned in package.json 
 
 ## npm install
+
+Mongodb
+
+## our database name : iotdb
+
+Export directory
+
+## <directory_path> : <repo-path>/data
+
+Exporting mongodb
+
+## mongodump -d <our_database_name> -o <directory_path>
+
+Importing mongodb
+
+## mongorestore -d <our_database_name> <directory_path>
