@@ -4,11 +4,26 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Dataset = mongoose.model("dataset");
 var GatewayType = mongoose.model("gatewayType");
+var SensorType = mongoose.model("sensorType");
 
 //Add view
 router.get("/add",function(req,res,next){
+	//get all the rows of sensor_type
+	var sensor_types={};
+	SensorType.find({},function(err,data){
+	var names=[]
+	var ids=[]
+	for(var prop in data){
+		names[prop]=(data[prop].name);
+		ids[prop]=(data[prop].id);
+	}
 	
-	res.render("gatewaytype/add");
+	// console.log(names)
+	 names = JSON.stringify(names);
+	 ids = JSON.stringify(ids);
+	 console.log(names)
+	res.render("gatewaytype/add",{sensor_types_names : names,sensor_types_ids : ids});					
+	});			
 });
 
 //POST Dataset
@@ -26,7 +41,7 @@ router.post("/", function(req, res, next){
 		statics.push(req.body["static"+i]);
 	}
 	for(var i = 1; i <= parseInt(number_of_sensors); i++){
-		sensors.push(req.body["sensor"+i]);
+		sensors.push(req.body["sensor"+i]);		
 	}
 	GatewayType.create({
 		name : name,

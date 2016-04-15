@@ -24,7 +24,7 @@ block content
 				div#static_data_container.form-group
 				div.form-group
 					label(for="name") Number of sensors:
-					input.form-control(required="required",type="number", name="number_of_sensors", id="number_of_sensors")				
+					input.form-control(required="required",type="number",value="1", name="number_of_sensors", id="number_of_sensors")				
 				div.form-group
 					a.btn.btn-success(href="#", id="num_sensors_create") Create sensors
 				div#sensors_container.form-group
@@ -33,6 +33,7 @@ block content
 block inPageScript
 	script.
 		$(document).ready(function(){
+		
 			$("#num_meta_create").click(function(){
 				var nums = $("#number_of_meta_fields").val();
 				if(nums == ""){
@@ -62,19 +63,28 @@ block inPageScript
 					$("#static_data_container").append(tag);
 				}
 			});
+			
 			$("#num_sensors_create").click(function(){				
 				var nums = $("#number_of_sensors").val();
 				if(nums == ""){
 					alert("Enter number of sensors");
 					return false;
 				}
-				$("#sensors_container").html("");
-				
-				nums = parseInt(nums);
-				for(var i = 1; i <= nums; i++){
-					var tag = '<input type="text" placeholder="sensor data '+i+'" name="sensor'+i+'" class="form-control" required="required"/>';
-					$("#sensors_container").append(tag);
+				$("#sensors_container").html("");				
+				nums = parseInt(nums);	
+				var temp=[];
+				sensor_types_names=JSON.parse('!{sensor_types_names}');					
+				sensor_types_ids=JSON.parse('!{sensor_types_ids}');					
+				for(var i=1;i<=nums;i++){
+					var tag="";
+					tag+='<select name='+"sensor"+i+'>';
+					for(var x =0 ;x< sensor_types_names.length;x++){						
+						tag+='<option value='+sensor_types_ids[x]+'>'+sensor_types_names[x]+'</option>'					
+					}
+					tag+='</select>'
+					$("#sensors_container").append(tag+"<br><br>");					
 				}
+									
 			});
 		});
 		
