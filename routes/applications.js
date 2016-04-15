@@ -6,6 +6,8 @@ var Dataset = mongoose.model("dataset");
 var Application = mongoose.model("applications");
 var ApplicationUsers = mongoose.model("ApplicationUsers");
 var hat = require('hat');
+var RegisterGateway = mongoose.model("registerGateway");
+var Gateway = mongoose.model("gateway");
 //GET datasets
 router.get("/home/:id",function(req, res, next){
 	Application.find(function(err, data){
@@ -24,6 +26,48 @@ router.get("/:id/users",function(req,res,next){
 		res.render("application/view", {apps : apps})
 	});
 });
+
+//GET Edit access page for app users
+
+router.get("/access/:id", function(req,res,next){
+	var access_token = req.params.id;
+	ApplicationUsers.findOne({access_token : access_token}, function(err, user){
+		var gateways = user.gateways;
+		var app_id = user.app_id;
+		RegisterGateway.findOne({app_id: app_id},function(err,app){
+			var gateways = []
+			if(app){
+				gateways = app.gateways;
+				Gateway.find({_id : {$in: gateways}}, function(err, app_gateways){
+					res.render("application/edit_user_access", {gateways : app_gateways, access_token: access_token,app_id: app_id});		
+				});
+			}
+			
+		})
+	});
+});
+
+router.post("/access", function(req,res,next){
+	var access_token = req.body.access_token;
+	var app_id = req.body.app_id;
+	var gateways = req.body.gateways;
+	ApplicationUsers.update({access_token : access_token},{
+		gateways : gateways
+	},function(err, app_user){
+		res.redirect("/applications/"+app_id+"/users");
+	});
+});
+
+//GET static update of app users
+// router.get("/access/:id", function(req,res,next){
+// 	var access_token = req.params.id;
+// 	ApplicationUsers.update({access_token : access_token},{
+// 		gateways: []
+// 	},
+// 	function(err, user){
+// 		res.json(user);
+// 	});
+// });
 
 //Add view
 router.get("/add",function(req,res,next){

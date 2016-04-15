@@ -7,6 +7,7 @@ var Application = mongoose.model("applications");
 var ApplicationUsers = mongoose.model("ApplicationUsers");
 var hat = require('hat');
 var Rule = mongoose.model("rule");
+var Gateway = mongoose.model("gateway");
 var helper = require("../utils/helper");
 
 /*POST: Register app*/
@@ -26,7 +27,8 @@ router.post("/v1.0/register",function(req,res,next){
 			ApplicationUsers.create({
 				name: name,
 				app_id: data._id,
-				access_token: hat()				
+				access_token: hat(),
+				gateways : []
 			},function(err,user){
 				console.log(err+" "+user);
 				res.json(user);
@@ -103,6 +105,55 @@ router.post("/", function(req,res,next){
 	});
 	
 	
+});
+
+/*GET user gateway rules*/
+
+router.get("/v1.0/rules/:access_token",function(req, res, next){
+	var access_token = req.params.access_token;
+	//check what gateways are assigned to user app
+	ApplicationUsers.findOne({access_token: access_token},function(err, user){
+		if(user){
+			var gateways = user.gateways;
+
+			//get gateway types for gateways assigned
+			Gateway.find({_id: {$in: gateways}}, function(err, user_gateways){
+				var gatewayTypes = [];
+				for(g of user_gateways){
+					gatewayTypes.push(g.gateway_type_id);
+				}
+				console.log("Gateway Types : "+gatewayTypes);
+				//get corresponding rules for that gateway types and sensor type
+				Rule.find({gateway_type_id: {$in: gatewayTypes}}).lean().exec(function(err, rules){
+					var updated_rules = [];
+					(function(){
+						for(var i in rules){
+							(function(rulex){
+								var rule = {};// = rulex;
+								rule["gateways"] = [];						
+								for(g of user_gateways){
+									if(g.gateway_type_id == rules[i].gateway_type_id){
+										rule.gateways.push(g);
+										console.log("Adding gateway ..." + g.name);
+									} else {
+										console.log("Not Adding gateway ..." + g.name);
+									}
+								}
+								rulex["gateways"] = rule;
+								updated_rules.push(rulex);							
+								console.log(JSON.stringify(rulex));
+							})(rules[i]);						
+						}
+					})();
+					res.json(updated_rules);
+				});
+			});
+		} else {
+			var error = "Error: invalid access token";
+			//return list of rule templates
+			res.json(error);
+		}
+	})	
 });
 
 module.exports = router;

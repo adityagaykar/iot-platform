@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+	h3 Edit Access
+	hr
+	div.col-md-12
+		h4 Add Application
+		div.col-md-6
+			form(method="POST", action="/applications/access")
+				div.form-group
+					label(for="name") Select Gateways :
+					select#gateway_type.form-control(required="required",name="gateways", multiple="multiple")
+						-each opt,i in gateways							
+							option(value="#{opt._id}") #{opt.name}							
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Submit")		
+					input(type="hidden", value="#{access_token}", name="access_token")
+					input(type="hidden", value="#{app_id}", name="app_id")
+block inPageScript
+	script.
+		
