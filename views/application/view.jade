@@ -2,20 +2,25 @@ extends ../layout
 
 block content
 	div.col-md-12
-		h4 Applications
+		h4 Application Users
 		hr
 		div.col-md-6
 			table.table
 				tr
 					th Name
-					th Owner Id
+					th Access Token
+					th Assigned Gateways
+					th  
 					th  
 				- each variable,i in apps
 					tr
 						td #{variable.name}
-						td #{variable.owner}
+						td #{variable.access_token}
+						td #{variable.gateways.join(",")}
 						td
 							a(href="/applications/delete/#{variable._id}") Delete						
+						td
+							a(href="/applications/access/#{variable.access_token}") Edit Access	
 
 		
 block inPageScript
