@@ -31,8 +31,13 @@ router.get("/add/:id",function(req,res,next){
 				GatewayType.find({_id: {$in : type_ids}}, function(err, types){
 					if(err)
 						res.send(err + JSON.stringify(type_ids));
-					else
-						res.render("rules/add",{app_id : app_id, gateway_types: types});
+					else{
+						sensor_types = []
+						if(types.length > 0){
+							sensor_types = types[0].sensor_data;	
+						}					
+						res.render("rules/add",{app_id : app_id, gateway_types: types,sensor_types : sensor_types});
+					}
 				})
 			});
 		} else {
