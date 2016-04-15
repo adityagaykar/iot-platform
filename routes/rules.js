@@ -4,7 +4,10 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Dataset = mongoose.model("dataset");
 var Rule = mongoose.model("rule");
-
+var RegisterGateway = mongoose.model("registerGateway");
+var Gateway = mongoose.model("gateway");
+var GatewayType = mongoose.model("gatewayType");
+var SensorType = mongoose.model("sensorType");
 //GET rule
 router.get("/:id",function(req, res, next){
 	var app_id = req.params.id;
@@ -16,16 +19,35 @@ router.get("/:id",function(req, res, next){
 //Add rule
 router.get("/add/:id",function(req,res,next){
 	var app_id = req.params.id;
-	res.render("rules/add",{app_id : app_id});
+	RegisterGateway.findOne({app_id : app_id}, function(err, registered_gateways){
+		if(registered_gateways){
+			var gateways=registered_gateways.gateways;
+			Gateway.find({_id: {$in : gateways}},  function(err, app_gateways){
+				var type_ids = {};
+				//get all app gateway type ids
+				for(gateway of app_gateways)
+					type_ids[gateway.gateway_type_id] = 1;
+				type_ids = Object.keys(type_ids);			
+				GatewayType.find({_id: {$in : type_ids}}, function(err, types){
+					if(err)
+						res.send(err + JSON.stringify(type_ids));
+					else
+						res.render("rules/add",{app_id : app_id, gateway_types: types});
+				})
+			});
+		} else {
+			res.redirect("/home");
+		}
+	});	
 });
 
 //POST rule
 router.post("/", function(req, res, next){
 	var name = req.body.name;	
 	var owner = req.session.user._id;	
-	var callback = req.body.callback;
 	var uri = req.body.uri;
 	var app_id = req.body.app_id;
+	var gateway_type = req.body.gateway_type;
 	var sensor_type = req.body.sensor_type;
 
 	Rule.find({name: name}, function(err, data){
@@ -35,10 +57,10 @@ router.post("/", function(req, res, next){
 			Rule.create({
 				name : name,
 				owner : owner,
-				callback : callback,
 				uri : uri,
 				app_id : app_id,
-				sensor_type : sensor_type
+				gateway_type_id : gateway_type,
+				sensor_type_id : sensor_type
 			}, function(err, rule){
 				if( err)
 					res.send(err);
@@ -49,13 +71,64 @@ router.post("/", function(req, res, next){
 	});
 });
 	
+//GET sensors
+
+router.get("/sensortypes/:id", function(req,res,next){
+	var gateway_type_id = req.params.id;
+	GatewayType.findOne({_id : gateway_type_id}, function(err,type){
+		if(type){
+			var sensors = type.sensor_data;
+			res.json(sensors);
+		} else {
+			res.json(err);
+		}
+	});
+});
+
 
 //GET edit rule
 router.get("/update/:id", function(req, res, next){
 	var id = req.params.id;
-
 	Rule.findOne({_id: id},function(err, rule){
-		res.render("rules/edit", {name: rule.name,uri: rule.uri, sensor_type: rule.sensor_type,callback: rule.callback, id: rule._id, app_id: rule.app_id});
+		var app_id = rule.app_id;
+		RegisterGateway.findOne({app_id : app_id}, function(err, registered_gateways){
+			if(registered_gateways){
+				var gateways=registered_gateways.gateways;
+				Gateway.find({_id: {$in : gateways}},  function(err, app_gateways){
+					var type_ids = {};
+					//get all app gateway type ids
+					for(gateway of app_gateways)
+						type_ids[gateway.gateway_type_id] = 1;
+					type_ids = Object.keys(type_ids);
+					GatewayType.find({_id: {$in : type_ids}}, function(err, types){
+							sensor_types = [];
+							for(type of types){
+								if(type._id == rule.gateway_type_id){
+									type["selected"] = "selected";
+									sensor_types = type.sensor_data;
+								}
+								else
+									type["selected"] = "";
+							}							
+							sensor_selected = []
+							for(type of sensor_types){
+								if(type == rule.sensor_type_id)
+									sensor_selected.push({name: type, selected:"selected"});
+								else
+									sensor_selected.push({name: type, selected:"notselected"});
+							}
+							console.log(JSON.stringify(sensor_selected));
+							res.render("rules/edit", {name: rule.name,
+									uri: rule.uri, sensor_type: rule.sensor_type,
+									callback: rule.callback, id: rule._id,
+									app_id: rule.app_id, gateway_types: types, sensor_types: sensor_selected});
+						
+					})
+				});
+			} else {
+				res.redirect("/home");
+			}
+		});
 	});	
 });
 
@@ -68,6 +141,7 @@ router.post("/update/:id", function(req, res, next){
 	var uri = req.body.uri;
 	var callback = req.body.callback;
 	var app_id = req.body.app_id;
+	var gateway_type = req.body.gateway_type;
 	var sensor_type = req.body.sensor_type;
 	console.log("App_id : "+app_id);
 	Rule.update({_id: id},{
@@ -76,7 +150,8 @@ router.post("/update/:id", function(req, res, next){
 		callback : callback,
 		app_id : app_id,
 		uri: uri,
-		sensor_type : sensor_type
+		gateway_type_id : gateway_type,
+		sensor_type_id: sensor_type
 	}, function(err, curr_rule){
 		if( err)
 			res.send(err);							

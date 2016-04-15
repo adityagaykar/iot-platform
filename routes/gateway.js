@@ -52,7 +52,7 @@ router.post("/", function(req, res, next){
 	Gateway.create({
 		name : name,
 		owner : owner,
-		type : type,
+		gateway_type_id : type,
 		dataset : variablesFields
 	}, function(err, dataset){
 		if( err)

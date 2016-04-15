@@ -9,17 +9,16 @@ block content
 					th Name
 					th Application Id
 					th Uri
-					th Callback
-					th Sensor Type
-					th  
+					th Gateway Type
+					th Sensor Type 
 					th  
 				- each variable,i in rules
 					tr
 						td #{variable.name}
 						td #{variable.app_id}
 						td #{variable.uri}										
-						td #{variable.callback}										
-						td #{variable.sensor_type}
+						td #{variable.gateway_type_id}
+						td #{variable.sensor_type_id}										
 						td
 							a(href="/rules/delete/#{variable._id}") Delete						
 						td

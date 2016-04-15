@@ -32,7 +32,7 @@ block content
 					label(for="name") Type:
 					select.form-control(required="required", name="type")
 						- each variable,i in types
-							option(value="#{variable.name}") #{variable.name}
+							option(value="#{variable._id}") #{variable.name}
 				div#dataset.form-group
 				div.form-group
 					label(for="variable") Variable: 
