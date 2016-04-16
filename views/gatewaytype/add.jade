@@ -77,7 +77,7 @@ block inPageScript
 				sensor_types_ids=JSON.parse('!{sensor_types_ids}');					
 				for(var i=1;i<=nums;i++){
 					var tag="";
-					tag+='<select name='+"sensor"+i+'>';
+					tag+='<select class="form-control" name='+"sensor"+i+'>';
 					for(var x =0 ;x< sensor_types_names.length;x++){						
 						tag+='<option value='+sensor_types_ids[x]+'>'+sensor_types_names[x]+'</option>'					
 					}
