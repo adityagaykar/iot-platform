@@ -19,7 +19,7 @@ router.get("/view/:id",function(req, res, next){
 //Add Gateway
 router.get("/add",function(req,res,next){
 	GatewayType.find({}, function(err,data){
-		res.render("gateways/add",{types : data});	
+		res.render("gateways/add",{types : JSON.stringify(data)});	
 	});
 	
 });
