@@ -9,7 +9,7 @@ var hat = require('hat');
 var Rule = mongoose.model("rule");
 var Gateway = mongoose.model("gateway");
 var helper = require("../utils/helper");
-
+var UserRule = mongoose.model("userrule");
 /*POST: Register app*/
 
 router.post("/v1.0/register",function(req,res,next){
@@ -155,5 +155,86 @@ router.get("/v1.0/rules/:access_token",function(req, res, next){
 		}
 	})	
 });
+/*
+var mongoose = require("mongoose");
+var schema = mongoose.Schema;
+var sha1 = require('sha1');
+var ruleSchema = new schema({
+	uid: {type: String, required: true},
+	name: {type: String, required: true},
+	threshold : {type: String, required: true},
+	condition : {type: String, required: true},
+	rule_id : {type: String, required: true},
+	status : {type: String, required: true},
+	frequency : {type: String, required: true},
+	gateway_name:{type: String, required: true},
+	gateway_id:{type: String, required: true},
+	sensor_id:{type: String, required: true},
+	created_on: {type: Date, default: Date.now}
+});
+
+module.exports = mongoose.model("rule",ruleSchema);
+*/
+
+/*POST user rule*/
+router.post("/v1.0/rules/:access_token/add",function(req, res, next){
+	var uid = req.body.uid;
+	var app_id = req.body.app_id;
+	var name = req.body.name;
+	var threshold = req.body.threshold;
+	var condition = req.body.condition;
+	var rule_id = req.body.rule_id;
+	var rule_name = req.body.rule_name;
+	var status = req.body.status;
+	var frequency = req.body.frequency;
+	var gateway_id = req.body.gateway_id;
+	var gateway_name = req.body.gateway_name;
+	var sensor_id = req.body.sensor_id;
+	UserRule.create({
+		uid: uid,
+		name: name,
+		app_id: app_id,
+		threshold: threshold,
+		condition: condition,
+		rule_id: rule_id,
+		rule_name: rule_name,
+		status: status,
+		frequency: frequency,
+		gateway_id: gateway_id,
+		gateway_name: gateway_name,
+		sensor_id : sensor_id
+	}, function(err, rule){
+		res.json(rule);
+	});
+});
+
+/*UPDATE user rules*/
+/*POST user rule*/
+router.post("/v1.0/rules/:access_token/update",function(req, res, next){
+	var _id = req.body.id;
+	var name = req.body.name;
+	var threshold = req.body.threshold;
+	var condition = req.body.condition;
+	var status = req.body.status;
+	var frequency = req.body.frequency;	
+	UserRule.update({_id: _id},{
+		name: name,
+		threshold: threshold,
+		condition: condition,
+		status: status,
+		frequency: frequency		
+	}, function(err, rule){
+		res.json(rule);
+	});
+});
+
+/*Delete user rule*/
+router.post("/v1.0/rules/:access_token/delete",function(req, res, next){
+	var _id = req.body.id;
+	UserRule.remove({_id: _id}).exec();	
+	res.send("success");
+});
+
+
 
 module.exports = router;

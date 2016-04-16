@@ -37,7 +37,7 @@ var gatewayTypeModel = require('./models/gateway_type');
 var sensorTypeModel = require('./models/sensor_type');
 var registerGatewayModel = require('./models/register_gateway');
 var appUserModel = require('./models/app_users');
-
+var userRuleModel = require('./models/user_rule');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
