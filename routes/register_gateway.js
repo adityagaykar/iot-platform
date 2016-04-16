@@ -4,7 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Gateway = mongoose.model("gateway");
 var GatewayType = mongoose.model("gatewayType");
-
+var RegisterGateway = mongoose.model("registerGateway");
 
 //GET datasets
 router.get("/view/:id",function(req, res, next){
