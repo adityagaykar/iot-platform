@@ -8,37 +8,11 @@ block content
 		div.col-md-6
 			form(method="POST", action="/gateways")
 				div.form-group
-					label(for="name") Name:
-					input.form-control(required="required",type="text", name="name")
-				div.form-group
-					label(for="name") Meta data 1:
-					input.form-control(required="required",placeholder="name",type="text", name="m1name")
-					input.form-control(required="required",placeholder="value",type="text", name="m1value")
-
-				div.form-group
-					label(for="name") Meta data 2:
-					input.form-control(required="required",placeholder="name",type="text", name="m2name")
-					input.form-control(required="required",placeholder="value",type="text", name="m2value")
-
-				div.form-group
-					label(for="name") Meta data 3:
-					input.form-control(required="required",placeholder="name",type="text", name="m3name")
-					input.form-control(required="required",placeholder="value",type="text", name="m3value")		
-				div.form-group
-					label(for="name") Meta data 4:
-					input.form-control(required="required",placeholder="name",type="text", name="m4name")
-					input.form-control(required="required",placeholder="value",type="text", name="m4value")
-				div.form-group
-					label(for="name") Type:
-					select.form-control(required="required", name="type")
-						- each variable,i in types
-							option(value="#{variable._id}") #{variable.name}
-				div#dataset.form-group
-				div.form-group
-					label(for="variable") Variable: 
-					input#variable.form-control(name="variable")					
+					label(for="variable") Number of gateway instances: 
+					input#variable.form-control(name="variable",value="2")					
 				div
-					button#add.btn.btn-success(required="required",onclick="return false") +
+					input#add.btn.btn-success(type="button",required="required",onclick="return false",value="add")
+				div#dataset.form-group
 				div.col-md-offset-5
 					input.btn.btn-success(required="required",type="submit", value="Submit")
 
@@ -46,18 +20,34 @@ block content
 block inPageScript
 	script.
 		$(document).ready(function(){
-			var varId = 1;
+			types=JSON.parse('!{types}');				
+			
 			$("#add").click(function(){				
-				var name = $("#variable").val();
-				if (name.trim() == ""){
+				var num = $("#variable").val(); 
+				if (num.trim() == ""){
 					alert("enter a variable");
 					return false;
+				}				
+				$("#dataset").empty();				
+				for(var i=1;i<=num;i++){
+					var tag='<div name="form-group">'
+					tag+='<label for="name"> Name '+i+':'
+					tag+='<input class="form-control" required="required" type="text"  name="name'+i+'">'
+					$("#dataset").append(tag);
+					
+					tag=''
+					var tag='<div name="form-group">'
+					tag+='<label for="name"> Type '+i+':'
+					tag+='<select class="form-control" required="required" name="type'+i+'">'
+					for( var j of types){
+						tag+='<option value="'+j._id+'">'+j.name+'</option>'
+					}
+					tag+='</select>'	
+					$("#dataset").append(tag);
 				}
-				var tag = '<div id="var'+varId+'"><input readonly="readonly" type="text" name="'+name+'" class="" value="'+name+'"/>';
-				tag += '<button class="btn btn-warning" class="delete" onclick="$(\'#var'+varId+'\').remove();return false;" value="var'+varId+'">-</button></div>'
-				$("#dataset").append(tag);
-				$("#variable").val("");
-				varId++;
+				
+
+				
 				return false;				
 			});
 
