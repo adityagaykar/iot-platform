@@ -6,6 +6,10 @@ var servers = {
 	user_app_server: {
 		hostname: "localhost",
 		port: 3001
+	},
+	logic_server:{
+		hostname: "localhost",
+		port: 3002
 	}
 }
 
