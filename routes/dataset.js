@@ -12,58 +12,58 @@ router.get("/:id",function(req, res, next){
 	});
 });
 
-//Add view
-router.get("/add/:id",function(req,res,next){
-	var app_id = req.params.id;	
-	res.render("dataset/add",{app_id: app_id});
-});
+// //Add view
+// router.get("/add/:id",function(req,res,next){
+// 	var app_id = req.params.id;	
+// 	res.render("dataset/add",{app_id: app_id});
+// });
 
-//POST Dataset
-router.post("/", function(req, res, next){
-	var name = req.body.name;
-	var owner = req.session.user._id;
-	var app_id = req.body.app_id;
-	delete req.body.name;
-	delete req.body.variable;
-	delete req.body.app_id;
+// //POST Dataset
+// router.post("/", function(req, res, next){
+// 	var name = req.body.name;
+// 	var owner = req.session.user._id;
+// 	var app_id = req.body.app_id;
+// 	delete req.body.name;
+// 	delete req.body.variable;
+// 	delete req.body.app_id;
 
-	console.log("App id : " + app_id);
-	var propertiesList = [];
-    for (var property in req.body) {
-        if (req.body.hasOwnProperty(property)) {
-            propertiesList.push(property);
-        }
-    }
-    propertiesList.reverse();
+// 	console.log("App id : " + app_id);
+// 	var propertiesList = [];
+//     for (var property in req.body) {
+//         if (req.body.hasOwnProperty(property)) {
+//             propertiesList.push(property);
+//         }
+//     }
+//     propertiesList.reverse();
 
-    var variablesFields = {};
-    for (var i in propertiesList) {
-        console.log(propertiesList[i])
-        variablesFields[propertiesList[i]] = {name:req.body[propertiesList[i]],
-                                    values: Array}; 
-    }
+//     var variablesFields = {};
+//     for (var i in propertiesList) {
+//         console.log(propertiesList[i])
+//         variablesFields[propertiesList[i]] = {name:req.body[propertiesList[i]],
+//                                     values: Array}; 
+//     }
 
-	Dataset.create({
-		name : name,
-		owner : owner,
-		app_id : app_id,
-		dataset : variablesFields
-	}, function(err, dataset){
-		if( err)
-			res.send(err);
-		else
-			res.redirect("/datasets/"+app_id);
-	})
-});
+// 	Dataset.create({
+// 		name : name,
+// 		owner : owner,
+// 		app_id : app_id,
+// 		dataset : variablesFields
+// 	}, function(err, dataset){
+// 		if( err)
+// 			res.send(err);
+// 		else
+// 			res.redirect("/datasets/"+app_id);
+// 	})
+// });
 
 
-//DELETE Dataset
+// //DELETE Dataset
 
-router.get("/delete/:id",function(req, res, next){
-	var id = req.params.id;
-	console.log(id);
-	Dataset.remove({_id: id}).exec();	
-	res.redirect("/home");
-});
+// router.get("/delete/:id",function(req, res, next){
+// 	var id = req.params.id;
+// 	console.log(id);
+// 	Dataset.remove({_id: id}).exec();	
+// 	res.redirect("/home");
+// });
 
 module.exports = router;

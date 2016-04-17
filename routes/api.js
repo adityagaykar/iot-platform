@@ -309,6 +309,17 @@ router.post("/v1.0/rules/:access_token/delete",function(req, res, next){
 	res.send("success");
 });
 
-
+/*GET dataset values*/
+router.get("/v1.0/datasets/:access_token/rules/:rule_id",function(req,res,next){
+	var access_token = req.params.access_token;
+	var rule_id = req.params.rule_id;
+	console.log(access_token + " "+ rule_id);
+	Dataset.findOne({rule_id: rule_id, access_token: access_token}, function(err, dataset){
+		if(dataset){
+			res.json(dataset);	
+		}else
+			res.json({error: "No dataset found"});
+	});
+});
 
 module.exports = router;
