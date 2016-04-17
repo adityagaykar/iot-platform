@@ -7,13 +7,16 @@ block content
 		h4 Add Dataset
 		div.col-md-6
 			form(method="POST", action="/gateways")
+				div.form-group					
+					div#dataset.form-group
+				div.form-group
+					div#metadata.form-group
+				div.form-group
+					div#staticdata.form-group
 				div.form-group
 					label(for="variable") Number of gateway instances: 
-					input#variable.form-control(name="variable",value="2")					
-				div
-					input#add.btn.btn-success(type="button",required="required",onclick="return false",value="add")
-				div#dataset.form-group
-				div.col-md-offset-5
+					input#variable.form-control(name="variable",type="number",style="width:60px;",value="2")							
+				div.col-md
 					input.btn.btn-success(required="required",type="submit", value="Submit")
 
 		
@@ -21,35 +24,93 @@ block inPageScript
 	script.
 		$(document).ready(function(){
 			types=JSON.parse('!{types}');				
-			
-			$("#add").click(function(){				
 				var num = $("#variable").val(); 
 				if (num.trim() == ""){
 					alert("enter a variable");
 					return false;
-				}				
+				}		
+	
 				$("#dataset").empty();				
-				for(var i=1;i<=num;i++){
-					var tag='<div name="form-group">'
-					tag+='<label for="name"> Name '+i+':'
-					tag+='<input class="form-control" required="required" type="text"  name="name'+i+'">'
-					$("#dataset").append(tag);
-					
-					tag=''
-					var tag='<div name="form-group">'
-					tag+='<label for="name"> Type '+i+':'
-					tag+='<select class="form-control" required="required" name="type'+i+'">'
-					for( var j of types){
-						tag+='<option value="'+j._id+'">'+j.name+'</option>'
-					}
-					tag+='</select>'	
-					$("#dataset").append(tag);
+				tag=''
+				var tag='<div class="form-group">'
+				//tag+='<label for="sel1"> Gateway type:</label>'
+				tag+='<select class="form-control" required="required" name="type">'
+				for( var j of types){
+					tag+='<option value="'+j._id+'">'+j.name+'</option>'
 				}
+				tag+='</select>'	
+				$("#dataset").append(tag);
 				
-
-				
-				return false;				
-			});
-
+				/********** for the first select option *********/
+					$("#metadata").empty();
+				    var valueSelected = $("select").val();				    				   	
+				   	tag=''				   
+				   	$("#metadata").empty();	
+					for(var j of types){
+						if(j._id==valueSelected){
+							for(var k =0;k<j.meta_data.length;k++){								
+								//tag+='<label for="variable">'+j.meta_data[k]+'</label>'
+								tag+='<input class="form-control" type="hidden" name="'+j.meta_data[k]+'" style="width:250px"  value="empty">'
+									
+							}
+							break;
+						}
+					}
+					
+					$("#metadata").append(tag);		
+				/*********** when use change select option ************/
+						
+					$('select').on('change', function (e) {
+					$("#metadata").empty();
+				    var optionSelected = $("option:selected", this);
+				    var valueSelected = this.value;				   	
+				   	tag=''
+					for(var j of types){
+						if(j._id==valueSelected){
+							for(var k =0;k<j.meta_data.length;k++){
+								//tag+='<label for="variable">'+j.meta_data[k]+'</label>'
+								tag+='<input class="form-control" type="hidden" name="'+j.meta_data[k]+'" style="width:250px" value="empty">'								
+							}
+							break;
+						}
+					}
+					$("#metadata").append(tag);
+					});
+				/********** for the first select option *********/
+					$("#staticdata").empty();
+				    var valueSelected = $("select").val();				    				   	
+				   	tag=''				   
+				   	$("#staticdata").empty();	
+					for(var j of types){
+						if(j._id==valueSelected){
+							for(var k =0;k<j.static_data.length;k++){	
+								//tag+='<label for="variable">'+j.static_data[k]+'</label>'
+								tag+='<input class="form-control" type="hidden" name="'+j.static_data[k]+'" style="width:250px" value="empty">'
+									
+							}
+							break;
+						}
+					}
+					
+					$("#staticdata").append(tag);		
+				/*********** when use change select option ************/
+						
+					$('select').on('change', function (e) {
+					$("#staticdata").empty();
+				    var optionSelected = $("option:selected", this);
+				    var valueSelected = this.value;				   	
+				   	tag=''
+					for(var j of types){
+						if(j._id==valueSelected){
+							for(var k =0;k<j.static_data.length;k++){
+								//tag+='<label for="variable">'+j.static_data[k]+'</label>'
+								tag+='<input class="form-control" type="hidden" name="'+j.static_data[k]+'" style="width:250px" value="empty">'								
+							}
+							break;
+						}
+					}
+					$("#staticdata").append(tag);
+					});
+	
+				return false;							
 		});
-		

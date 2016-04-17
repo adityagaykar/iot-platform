@@ -1,6 +1,7 @@
 extends layout
 
 block content
+	input.form-control(type="hidden", style="width:200px",value="created_by praveen" )
 	if user
 		h3 Welcome, #{user.name}	
 	hr
@@ -10,11 +11,13 @@ block content
 			div.col-md-6
 				table.table
 					tr
+						th Id
 						th Name
 						th Owner Id
 						th  
 					- each variable,i in sensor_types
 						tr
+							td #{variable._id}
 							td #{variable.name}
 							td #{variable.owner}
 							td
@@ -27,13 +30,15 @@ block content
 			div.col-md-6
 				table.table
 					tr
+						th ID 
 						th Name
-						th Owner Id
-						th  
+						th Owner Id						
+						th 
 					- each variable,i in gateway_types
 						tr
+							td #{variable._id}
 							td #{variable.name}
-							td #{variable.owner}
+							td #{variable.owner}							
 							td
 								a(href="/gatewaytypes/delete/#{variable._id}") Delete
 		div.col-md-2				
@@ -45,16 +50,19 @@ block content
 				table.table
 					tr
 						th Name
-						th Owner Id
+						//th Owner Id
 						th Type
-						th Dataset
-						th  
+						th Sensors
+						th Edit
+						th Delete
 					- each variable,i in gateway_instances
 						tr
 							td #{variable.name}
-							td #{variable.owner}
-							td #{variable.type}
-							td #{JSON.stringify(variable.dataset)}										
+							//td #{variable.owner}
+							td #{variable.gateway_type_id}
+							td #{JSON.stringify(variable.sensor_data)}								
+							td 
+								a(href="/gateways/edit/#{variable._id}") Edit
 							td
 								a(href="/gateways/delete/#{variable._id}") Delete
 		div.col-md-2				

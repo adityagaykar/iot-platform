@@ -35,8 +35,15 @@ router.get("/add/:id",function(req,res,next){
 						sensor_types = []
 						if(types.length > 0){
 							sensor_types = types[0].sensor_data;	
-						}					
-						res.render("rules/add",{app_id : app_id, gateway_types: types,sensor_types : sensor_types});
+						}
+						SensorType.find({_id: {$in: sensor_types}}, function(err, available_sensor_types){
+							var list_of_types = []
+							for(type of available_sensor_types){
+								list_of_types.push(type.name);
+							}
+							res.render("rules/add",{app_id : app_id, gateway_types: types,sensor_types : list_of_types});	
+						});				
+						
 					}
 				})
 			});

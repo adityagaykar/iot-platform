@@ -13,13 +13,15 @@ var UserRule = mongoose.model("userrule");
 var servers = require("../utils/servers");
 var requestify = require("requestify");
 var logic_server = servers.logic_server;
+
+
 /*POST: Register app*/
 
 router.post("/v1.0/register",function(req,res,next){
 	var registration_key = req.body.registration_key;
 	var name = req.body.name;
-	//console.log("Name : "+name);
-	//console.log("registration_key : "+registration_key);
+	console.log("Name : "+name);
+	console.log("registration_key : "+registration_key);
 	if(!name || !registration_key){
 		var error = { error : "Invalid request: missing name or registration_key"};
 		res.json(error);
@@ -30,8 +32,7 @@ router.post("/v1.0/register",function(req,res,next){
 			ApplicationUsers.create({
 				name: name,
 				app_id: data._id,
-				access_token: hat(),
-				gateways : []
+				access_token: hat()				
 			},function(err,user){
 				console.log(err+" "+user);
 				res.json(user);

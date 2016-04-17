@@ -1,0 +1,63 @@
+extends ../layout
+
+block content
+	h3 Gateway 
+	hr
+	div.col-md-12
+		h4 Edit Gateway
+		div.col-md-6
+			form(method="POST", action="/gateways/edit")
+				div.form-group
+					label(for="name") New Name:
+					input.form-control(required="required",type="text", style="width:200px",name="name" id="nameid")
+				div.form-group					
+					label(for="name") GatewayID:
+					div#gatewayid					
+				div.form-group
+					label(for="name") Metadata's:	
+					div#metadata.form-group
+				div.form-group
+					label(for="name") Static data's:	
+					div#staticdata.form-group				
+				div.col-md
+					input.btn.btn-success(required="required",type="submit", value="Submit")
+
+block inPageScript
+	script.
+		$(document).ready(function(){
+			types=JSON.parse('!{types}');				
+					$('#nameid').val(types.name);
+					var gid = '<input class="form-control" required="required" type="text" style="width:250px" name="id" value="'+types._id+'" readonly>'
+					$("#gatewayid").append(gid)
+					$("#metadata").empty();
+						var tag=''
+						for (var k in types.meta_data){
+						    if (types.meta_data.hasOwnProperty(k)) {
+						    	for(var key in types.meta_data[k] ){
+							        tag+='<label for="variable">'+key+'</label>'
+									tag+='<input class="form-control" type="text" name="metadata_'+key+'" style="width:250px"  value='+types.meta_data[k][key]+'>'
+									console.log("key")
+								}
+						    }
+						}							
+					
+					$("#metadata").append(tag);		
+			
+				
+				$("#staticdata").empty();
+						tag=''
+						for (var k in types.static_data){
+						    if (types.static_data.hasOwnProperty(k)) {
+						    	for(var key in types.static_data[k] ){
+							        tag+='<label for="variable">'+key+'</label>'
+									tag+='<input class="form-control" type="text" name="staticdata_'+key+'" style="width:250px"  value='+types.static_data[k][key]+'>'
+									console.log(key)
+								}
+						    }
+						}							
+					
+					$("#staticdata").append(tag);		
+			
+	
+				return false;							
+		});
