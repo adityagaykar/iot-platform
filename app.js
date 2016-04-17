@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require("express-session"),
- MongoStore = require("connect-mongo")(session);
+MongoStore = require("connect-mongo")(session);
 
 var app = express();
 
@@ -52,7 +52,6 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 // We use mongodb to store session info
 // expiration of the session is set to 7 days (ttl option)
 app.use(session({
