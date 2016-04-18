@@ -101,4 +101,13 @@ router.get("/delete/:id",function(req, res, next){
 	res.redirect("/applications");
 });
 
+//DELETE APP users
+
+router.get("/delete/:id/users",function(req, res, next){
+	var id = req.params.id;
+	console.log(id);
+	ApplicationUsers.remove({_id: id}).exec();	
+	res.redirect("/home");
+});
+
 module.exports = router;

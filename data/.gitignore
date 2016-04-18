@@ -1,3 +1,5 @@
 # ignore all
 *
 !.gitignore
+!backup_db.sh
+!restore_db.sh
