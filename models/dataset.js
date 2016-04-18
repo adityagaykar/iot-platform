@@ -4,7 +4,7 @@ var schema = mongoose.Schema;
 var datasetSchema = new schema({
 	name: {type: String, required: true},
 	dataset : {type: Array, default: Array},
-	rule_id : {type: String},
+	rule_id : {type: String,index: {unique: true}},
 	rule_name : {type: String},
 	access_token : {type : String, required: true},
 	created_on: {type: Date, default: Date.now}

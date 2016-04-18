@@ -7,6 +7,7 @@ var ruleSchema = new schema({
 	name: {type: String, required: true},
 	threshold : {type: String, required: true},
 	condition : {type: String, required: true},
+	user_rule_id : {type: String, required: true},
 	rule_id : {type: String, required: true},
 	rule_name : {type: String, required: true},
 	status : {type: String, required: true},

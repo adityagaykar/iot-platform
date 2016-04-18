@@ -55,6 +55,8 @@ router.post("/v1.0/event",function(req,res,next){
 	for(sensor of sensorList){
 		UserRule.find({status: "enable", gateway_id: gateway_id, sensor_id: sensor.sensor_type}, function(err, rules){			
 			for(rule of rules){
+				if(rule.sensor_id != sensor.sensor_type)
+					continue;
 				var continue_check = false;
 				var curr = new Date();
 				if(rule.last_triggered == "-1"){
@@ -111,7 +113,7 @@ router.post("/v1.0/event",function(req,res,next){
 						});
 						
 					} else {
-						console.log("Not triggered : "+sensor_value+" | "+condition+" | "+threshold);
+						console.log("Not triggered : "+sensor_value+" | "+condition+" | "+threshold+" | "+sensor.sensor_type);
 					}
 					
 				} else {
@@ -264,10 +266,12 @@ router.post("/v1.0/rules/:access_token/add",function(req, res, next){
 	var gateway_id = req.body.gateway_id;
 	var gateway_name = req.body.gateway_name;
 	var sensor_id = req.body.sensor_id;
+	var user_rule_id = req.body.user_rule_id;
 	UserRule.create({
 		access_token: access_token,
 		name: name,
 		app_id: app_id,
+		user_rule_id: user_rule_id,
 		threshold: threshold,
 		condition: condition,
 		rule_id: rule_id,
@@ -310,11 +314,11 @@ router.post("/v1.0/rules/:access_token/delete",function(req, res, next){
 });
 
 /*GET dataset values*/
-router.get("/v1.0/datasets/:access_token/rules/:rule_id",function(req,res,next){
+router.get("/v1.0/datasets/:access_token/rules/:user_rule_id",function(req,res,next){
 	var access_token = req.params.access_token;
-	var rule_id = req.params.rule_id;
-	console.log(access_token + " "+ rule_id);
-	Dataset.findOne({rule_id: rule_id, access_token: access_token}, function(err, dataset){
+	var user_rule_id = req.params.user_rule_id;
+	console.log(access_token + " "+ user_rule_id);
+	Dataset.findOne({rule_id: user_rule_id, access_token: access_token}, function(err, dataset){
 		if(dataset){
 			res.json(dataset);	
 		}else
