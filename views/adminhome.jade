@@ -50,7 +50,7 @@ block content
 				table.table
 					tr
 						th Name
-						//th Owner Id
+						th Gateway Id
 						th Type
 						th Sensors
 						th Edit
@@ -58,7 +58,7 @@ block content
 					- each variable,i in gateway_instances
 						tr
 							td #{variable.name}
-							//td #{variable.owner}
+							td #{variable._id}
 							td #{variable.gateway_type_id}
 							td #{JSON.stringify(variable.sensor_data)}								
 							td 
