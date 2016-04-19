@@ -13,13 +13,15 @@ block content
 					tr
 						th Id
 						th Name
-						th Owner Id
+						//
+							th Owner Id
 						th  
 					- each variable,i in sensor_types
 						tr
 							td #{variable._id}
 							td #{variable.name}
-							td #{variable.owner}
+							//
+								td #{variable.owner}
 							td
 								a(href="/sensortypes/delete/#{variable._id}") Delete
 		div.col-md-2				
@@ -32,13 +34,15 @@ block content
 					tr
 						th ID 
 						th Name
-						th Owner Id						
+						//
+							th Owner Id						
 						th 
 					- each variable,i in gateway_types
 						tr
 							td #{variable._id}
 							td #{variable.name}
-							td #{variable.owner}							
+							//
+								td #{variable.owner}							
 							td
 								a(href="/gatewaytypes/delete/#{variable._id}") Delete
 		div.col-md-2				
@@ -50,17 +54,21 @@ block content
 				table.table
 					tr
 						th Name
-						th Gateway Id
+						//
+							th Gateway Id
 						th Type
-						th Sensors
+						//
+							th Sensors
 						th Edit
 						th Delete
 					- each variable,i in gateway_instances
 						tr
 							td #{variable.name}
-							td #{variable._id}
+							//
+								td #{variable._id}
 							td #{variable.gateway_type_id}
-							td #{JSON.stringify(variable.sensor_data)}								
+							//
+								td #{JSON.stringify(variable.sensor_data)}								
 							td 
 								a(href="/gateways/edit/#{variable._id}") Edit
 							td

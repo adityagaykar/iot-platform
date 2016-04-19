@@ -7,17 +7,18 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require("express-session"),
 MongoStore = require("connect-mongo")(session);
+var servers = require('./utils/servers');
+var db_server = servers.db_server;
 
 var app = express();
 
 //connect to db
 var mongoose = require("mongoose")
-mongoose.connect("mongodb://localhost/iotdb", function(err){
+mongoose.connect("mongodb://"+db_server.hostname+"/iot-userapp-db", function(err){
   if(err)
     throw err;  
     console.log("Connected to mongodb")
 });
-
 //wire-in the models
 
 //user model
