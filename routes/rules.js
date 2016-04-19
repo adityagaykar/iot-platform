@@ -12,7 +12,18 @@ var SensorType = mongoose.model("sensorType");
 router.get("/:id",function(req, res, next){
 	var app_id = req.params.id;
 	Rule.find({app_id: app_id},function(err, data){
-		res.render("rules/view",{rules : data});
+		var gateway_types = [];
+		for(type of data){
+			gateway_types.push(type.gateway_type_id);	
+		}
+		GatewayType.find({_id : {$in : gateway_types}},function(err, types){
+			var names = {};
+			for(type of types){
+				names[type._id] = type.name;
+			}
+			res.render("rules/view",{rules : data, names: names});
+		});
+		
 	});
 });
 
@@ -122,18 +133,22 @@ router.get("/update/:id", function(req, res, next){
 								else
 									type["selected"] = "";
 							}							
-							sensor_selected = []
-							for(type of sensor_types){
-								if(type == rule.sensor_type_id)
-									sensor_selected.push({name: type, selected:"selected"});
-								else
-									sensor_selected.push({name: type, selected:"notselected"});
-							}
-							console.log(JSON.stringify(sensor_selected));
-							res.render("rules/edit", {name: rule.name,
-									uri: rule.uri, sensor_type: rule.sensor_type,
-									callback: rule.callback, id: rule._id,
-									app_id: rule.app_id, gateway_types: types, sensor_types: sensor_selected});
+							
+							SensorType.find({_id: {$in : sensor_types}}, function(err, rule_sensor_types){
+									sensor_selected = []
+									for(type of rule_sensor_types){
+										if(type == rule.sensor_type_id)
+											sensor_selected.push({name: type, selected:"selected"});
+										else
+											sensor_selected.push({name: type, selected:"notselected"});
+									}
+									console.log(JSON.stringify(sensor_selected));
+									res.render("rules/edit", {name: rule.name,
+											uri: rule.uri, sensor_type: rule.sensor_type,
+											callback: rule.callback, id: rule._id,
+											app_id: rule.app_id, gateway_types: types, sensor_types: sensor_selected});
+							});
+							
 						
 					})
 				});

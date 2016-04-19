@@ -31,6 +31,7 @@ router.get("/:id/users",function(req,res,next){
 
 router.get("/access/:id", function(req,res,next){
 	var access_token = req.params.id;
+	
 	ApplicationUsers.findOne({access_token : access_token}, function(err, user){
 		var gateways = user.gateways;
 		var app_id = user.app_id;
@@ -51,10 +52,13 @@ router.post("/access", function(req,res,next){
 	var access_token = req.body.access_token;
 	var app_id = req.body.app_id;
 	var gateways = req.body.gateways;
-	ApplicationUsers.update({access_token : access_token},{
-		gateways : gateways
-	},function(err, app_user){
-		res.redirect("/applications/"+app_id+"/users");
+	Gateway.find({_id : {$in : gateways}}, function(err, gateway_objects){
+		ApplicationUsers.update({access_token : access_token},{
+		gateways : gateways,
+		gateway_objects : gateway_objects
+		},function(err, app_user){
+			res.redirect("/applications/"+app_id+"/users");
+		});
 	});
 });
 

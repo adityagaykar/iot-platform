@@ -26,9 +26,9 @@ block content
 					select#sensor_type.form-control(name="sensor_type")
 						-each opt,i in sensor_types
 							if opt.selected == "selected"
-								option(value="#{opt.name}", selected="selected") #{opt.name}
+								option(value="#{opt.name.name}", selected="selected") #{opt.name.name}
 							else
-								option(value="#{opt.name}") #{opt.name}
+								option(value="#{opt.name.name}") #{opt.name.name}
 				div.col-md-offset-5
 					input.btn.btn-success(required="required",type="submit", value="Update")
 					input(type="hidden",name="app_id",value="#{app_id}")

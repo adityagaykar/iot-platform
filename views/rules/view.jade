@@ -7,7 +7,8 @@ block content
 			table.table
 				tr
 					th Name
-					th Application Id
+					//
+						th Application Id
 					th Uri
 					th Gateway Type
 					th Sensor Type 
@@ -15,9 +16,10 @@ block content
 				- each variable,i in rules
 					tr
 						td #{variable.name}
-						td #{variable.app_id}
+						//
+							td #{variable.app_id}
 						td #{variable.uri}										
-						td #{variable.gateway_type_id}
+						td #{names[variable.gateway_type_id]}
 						td #{variable.sensor_type_id}										
 						td
 							a(href="/rules/delete/#{variable._id}") Delete						

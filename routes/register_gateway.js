@@ -17,7 +17,7 @@ router.get("/view/:id",function(req, res, next){
 //Add view
 router.get("/add/:id",function(req,res,next){
 	var app_id = req.params.id;
-	Gateway.find({},function(err, data){
+	Gateway.find({},function(err, data){		
 		res.render("registergateway/add",{app_id : app_id, gateways : data});	
 	});
 	
@@ -32,16 +32,20 @@ router.post("/", function(req, res, next){
 	//res.send(JSON.stringify(gateways));
 	RegisterGateway.findOne({app_id: app_id},function(err,data){
 		if(data){
-			RegisterGateway.update({app_id: app_id},{
-				owner : owner,
-				gateways : gateways,
-				app_id : app_id,				
-			}, function(err, data){
-					if(err)
-						res.send(err);
-					else
-						res.redirect("/applications/home/"+app_id);			
+			Gateway.find({_id : {$in : gateways}}, function(err, curr_gateways){
+				RegisterGateway.update({app_id: app_id},{
+					owner : owner,
+					gateways : gateways,
+					gateway_objects: curr_gateways,
+					app_id : app_id,				
+				}, function(err, data){
+						if(err)
+							res.send(err);
+						else
+							res.redirect("/applications/home/"+app_id);			
+				});
 			});
+			
 		}else{
 			RegisterGateway.create({
 				owner : owner,
