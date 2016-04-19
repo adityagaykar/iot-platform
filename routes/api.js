@@ -326,4 +326,37 @@ router.get("/v1.0/datasets/:access_token/rules/:user_rule_id",function(req,res,n
 	});
 });
 
+/*GET gateway status*/
+router.post("/v1.0/gateways/:access_token/status", function(req,res,next){
+	var access_token = req.params.access_token;
+	ApplicationUsers.findOne({access_token: access_token}, function(err, user){
+		if(user){
+			var gateways = user.gateways;
+			Gateway.find({_id : {$in : gateways}}, function(err, user_gateways){
+				var gate_way_info = [];
+				var curr_time = new Date();
+				curr_time = curr_time.getTime();
+				for( gateway of user_gateways){
+					if(!gateway.updated_on || gateway.updated_on == "-1"){
+						gate_way_info.push({name: gateway.name, status: "Offline", time_stamp: "-1"});
+					} else {
+						var gateway_time = new Date(parseInt(gateway.updated_on));
+						gateway_time = gateway_time.getTime();					
+						if(curr_time - gateway_time < 5000){
+							gate_way_info.push({name: gateway.name, status: "Online", time_stamp: gateway.updated_on});
+						} else {
+							gate_way_info.push({name: gateway.name, status: "Offline", time_stamp: gateway.updated_on});
+						}	
+					}
+					
+				}
+				res.json(gate_way_info);
+			});
+		} else {
+			res.json({error : "Invalid access_token"});
+			console.log("Error to get gateways");
+		}
+	});
+});
+
 module.exports = router;
