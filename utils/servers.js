@@ -8,15 +8,15 @@ var servers = {
 		port: 3001
 	},
 	logic_server:{
-		hostname: "localhost",
-		port: 3002
+		hostname: "10.2.128.186",
+		port: 5000
 	},
 	event_server:{
 		hostname: "localhost",
 		port: 3003
 	},
 	notification_server:{
-		hostname: "10.2.132.79",
+		hostname: "10.2.129.100",
 		port: 3300
 	},
 	data_server: {
@@ -24,11 +24,11 @@ var servers = {
 		port: 3000
 	},
 	data_listener : {
-		hostname: "localhost",
+		hostname: "10.2.128.158",
 		port: 3006
 	},
 	db_server : {
-		hostname : "10.2.132.79"
+		hostname : "localhost"//"10.2.132.79"
 	}
 
 }

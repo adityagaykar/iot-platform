@@ -46,6 +46,7 @@ router.post("/v1.0/register",function(req,res,next){
 
 /*POST event api*/
 router.post("/v1.0/event",function(req,res,next){
+	console.log(JSON.stringify(req));
 	var js_code = req.body.js_code;
 	js_code = eval("x = "+js_code);
 	var header = js_code.header;

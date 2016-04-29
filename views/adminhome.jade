@@ -53,9 +53,8 @@ block content
 			div.col-md-6
 				table.table
 					tr
-						th Name
-						//
-							th Gateway Id
+						th Name						
+						th Gateway Id
 						th Type
 						//
 							th Sensors
@@ -64,8 +63,7 @@ block content
 					- each variable,i in gateway_instances
 						tr
 							td #{variable.name}
-							//
-								td #{variable._id}
+							td #{variable._id}
 							td #{variable.gateway_type_id}
 							//
 								td #{JSON.stringify(variable.sensor_data)}								

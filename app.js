@@ -14,7 +14,7 @@ var app = express();
 
 //connect to db
 var mongoose = require("mongoose")
-mongoose.connect("mongodb://"+db_server.hostname+"/iot-userapp-db", function(err){
+mongoose.connect("mongodb://"+db_server.hostname+"/iotdb", function(err){
   if(err)
     throw err;  
     console.log("Connected to mongodb")
